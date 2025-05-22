@@ -1,0 +1,3 @@
+many, some :: Applicative f => f a -> f [a]
+many p = some p <|> pure []
+some p = liftA2 (:) p (many p)

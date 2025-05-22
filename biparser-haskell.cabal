@@ -1,0 +1,80 @@
+cabal-version:   3.0
+name:            biparser-haskell
+version:         0.1.0.0
+license:         MIT
+license-file:    LICENSE
+author:          William Dumez
+maintainer:      william.dumez@skynet.be
+build-type:      Simple
+extra-doc-files: README.md
+
+common language
+  default-language: Haskell2010
+
+common warnings
+  ghc-options: -Wall
+
+common extensions
+  default-extensions:
+    BlockArguments
+    TupleSections
+
+common deps
+  build-depends:
+    , base            >=4.17.2 && <4.22
+    , kan-extensions  >=5.2.6  && <5.3
+    , lens            >=5.3.4  && <5.4
+    , mtl             >=2.3.1  && <2.4
+    , prettyprinter   >=1.7.1  && <1.8
+    , rev-state       >=0.2.0  && <0.3
+
+common test-deps
+  import:        deps
+  build-depends:
+    , biparser-haskell
+    , Cabal             >=3.14.2.0 && <3.15
+    , directory         >=1.3.7    && <1.4
+    , time              >=1.14     && <1.15
+
+library
+  import:          language, warnings, extensions, deps
+  hs-source-dirs:  src
+  exposed-modules:
+    Biparser
+    Biparser.Combinators
+    Biparser.Haskell
+    Biparser.Haskell.Basic
+    Biparser.Haskell.Complements
+    Biparser.Haskell.Constructors
+    Biparser.Haskell.Token
+    Biparser.Indentation
+    Biparser.Internal
+    Biparser.Lambda
+    Language.Haskell.AST
+    Language.Lambda.AST
+    Parser
+    Parser.Haskell
+    Parser.Haskell.Basic
+    Parser.Haskell.Token
+    Parser.Lambda
+    PErr
+    Pos
+    Printer
+    Printer.RevStateImpl
+    Printer.RWSTImpl
+    Printer.StringImpl
+    Stack
+    Utils
+
+test-suite tests
+  import:         language, warnings, extensions, test-deps
+  type:           detailed-0.9
+  test-module:    Test
+  hs-source-dirs: test
+  other-modules:  TestUtils
+
+benchmark stress
+  import:         language, warnings, extensions, test-deps
+  type:           exitcode-stdio-1.0
+  hs-source-dirs: bench
+  main-is:        Main.hs
