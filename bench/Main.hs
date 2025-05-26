@@ -86,7 +86,7 @@ nestedInput n = if n >= 0 then pre ++ join (take n (repeat mid)) ++ post else ""
 longInput :: Int -> String
 longInput n
   | n <= 0 = ""
-  | otherwise = "f :: Int -> Int\nf 1 = 1\n" ++ (longInput (n - 1))
+  | otherwise = "f 1 = 1\n" ++ (longInput (n - 1))
 
 printNestedInput :: Int -> HsModule
 printNestedInput n = HsModule (Module "") Nothing [] [HsPatBind f (HsUnguardedRhs (e n)) []]
@@ -114,10 +114,7 @@ printLongInput n = HsModule (Module "") Nothing [] (decls n)
   where
     decls m
       | m <= 0 = []
-      | otherwise = ts : fd : decls (m - 1)
-    ts = HsTypeSig [f] (HsQualType [] fn)
-    fn = HsTyFun i i
-    i = HsTyCon (Qual (Module "") (HsIdent "Int"))
+      | otherwise = fd : decls (m - 1)
     f = HsIdent "f"
     fd = HsFunBind f [HsPLit (HsInteger "1")] (HsUnguardedRhs (HsLit (HsInteger "1"))) []
 
